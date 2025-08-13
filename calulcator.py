@@ -117,6 +117,7 @@ class WindowClass(QMainWindow, from_class):
         self.calEdit.moveCursor(QTextCursor.MoveOperation.End)
 
     def appendDecimalPoint(self, formula_str:str):
+        self.is_sign_reversed = False
         last_char = self.getLastChar(formula_str)
         if last_char.isdigit():
             numbers = re.findall(r'\d+\.\d+|\d+', formula_str)
@@ -140,6 +141,7 @@ class WindowClass(QMainWindow, from_class):
         
 
     def appendNumber(self, number:int):
+        self.is_sign_reversed = False
         self.calculation_formula = self.genDefaultOperator(self.calculation_formula, parenthesis_end=")")
         if self.calculation_formula == "0":
             if number == 0:
@@ -151,6 +153,7 @@ class WindowClass(QMainWindow, from_class):
         self.setCalText()
 
     def clear(self, amount:int=0):
+        self.is_sign_reversed = False
         if amount == 0:
             self.calculation_formula = "0"
             self.result_value = "0"
@@ -186,26 +189,27 @@ class WindowClass(QMainWindow, from_class):
                 self.setResultText()
             case EaOperator.PLUS:
                 print("EaOperator PLUS")
-
+                self.is_sign_reversed = False
                 # Append Operator on Formula
                 self.calculation_formula = self.genFormulaStr("+")
             case EaOperator.MINUS:
                 print("EaOperator MINUS")
-                
+                self.is_sign_reversed = False
                 # Append Operator on Formula
                 self.calculation_formula = self.genFormulaStr("-")
             case EaOperator.MULTIPLY:
                 print("EaOperator MULTIPLY")
-                
+                self.is_sign_reversed = False
                 # Append Operator on Formula
                 self.calculation_formula = self.genFormulaStr("×")
             case EaOperator.DEVIDE:
                 print("EaOperator DEVIDE")
-                
+                self.is_sign_reversed = False
                 # Append Operator on Formula
                 self.calculation_formula = self.genFormulaStr("÷")
             case EaOperator.PARENTHESIS_START:
                 print("EaOperator PARENTHESIS_START")
+                self.is_sign_reversed = False
                 self.parenthesis_cnt += 1
                 self.activateEndParenthesis()
                 self.activateEquals()
@@ -216,6 +220,7 @@ class WindowClass(QMainWindow, from_class):
                     self.calculation_formula = self.genDefaultOperator(self.calculation_formula, "(")
             case EaOperator.PARENTHESIS_END:
                 print("EaOperator PARENTHESIS_END")
+                self.is_sign_reversed = False
                 self.parenthesis_cnt -= 1
                 self.activateEndParenthesis()
                 self.activateEquals()
