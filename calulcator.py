@@ -6,7 +6,28 @@ from PyQt6 import uic
 from PyQt6 import QtGui
 from PyQt6.QtCore import *
 
-from elementry_arithmatic import Singledigit, EaOperator, ElementrArithmatic
+from enum import Enum
+
+class EaOperator(Enum):
+    EQUALS = 0
+    PLUS = 1
+    MINUS = 2
+    MULTIPLY = 3
+    DEVIDE = 4
+    PARENTHESIS_START = 5
+    PARENTHESIS_END = 6
+
+class Singledigit(Enum):
+    ZERO = 0
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    SIX = 6
+    SEVEN = 7
+    EIGHT = 8
+    NINE = 9
 
 from_class = uic.loadUiType("calculator.ui")[0]
 
