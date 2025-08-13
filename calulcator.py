@@ -37,7 +37,6 @@ class WindowClass(QMainWindow, from_class):
         self.setupUi(self)
 
         self.calculation_formula:str = "0"
-        self.current_value:str = "0"
         self.result_value:str = "0.0"
         self.parenthesis_cnt = 0
         self.view_formula_operators = ["+","-","×", "÷"]
@@ -228,7 +227,6 @@ class WindowClass(QMainWindow, from_class):
                 self.calculation_formula += ")"
             case _:
                 print("Something's wrong with the operator")
-        print(f"CURRENT VALUE : {self.current_value}")
         self.setCalText()
 
     def genEvalStr(self, formula_str):
