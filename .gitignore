@@ -1,0 +1,50 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# PyQt build files
+*.pyc
+*.so
+*.dll
+*.exe
+
+# Qt Designer UI files (if generated)
+*.ui.py
+
+# IDE files
+.vscode/
+.idea/
+
+# Test and coverage reports
+*.cover
+*.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
+
+# OneDrive temp files
+~$*
+
+# Misc
