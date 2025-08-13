@@ -20,7 +20,7 @@ class WindowClass(QMainWindow, from_class):
         self.result_value:str = "0.0"
         self.parenthesis_cnt = 0
         self.view_formula_operators = ["+","-","×", "÷"]
-        self.is_reversed = False
+        self.is_sign_reversed = False
 
         # INIT CAL TEXT EDIT
         self.calEdit.setText(self.calculation_formula)
@@ -64,7 +64,13 @@ class WindowClass(QMainWindow, from_class):
 
 
     def reversingSign(self):
-
+        if self.is_sign_reversed:
+            reversed_str = self.calculation_formula[2:-1]
+        else:
+            reversed_str = f"-({self.calculation_formula})" 
+        self.is_sign_reversed = not self.is_sign_reversed
+        self.calculation_formula = reversed_str
+        self.setCalText()
         
     def setResultText(self):
         print(f"setResultText : {self.result_value}")
