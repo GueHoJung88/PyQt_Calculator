@@ -136,14 +136,14 @@ class WindowClass(QMainWindow, from_class):
         self.calEdit.moveCursor(QTextCursor.MoveOperation.End)
 
         self.activateSign()
+        self.activateOperators()
+        self.activateEndParenthesis()
 
     def appendDecimalPoint(self, formula_str:str):
         self.is_sign_reversed = False
         last_char = self.getLastChar(formula_str)
         if last_char.isdigit():
-            numbers = re.findall(r'\d+\.\d+|\d+', formula_str)
-            length = len(numbers)
-            last_digit = str(numbers[length-1])
+            last_digit = self.getLastNumber(formula_str)
             print(f"appendDecimalPoint : {last_digit}")
 
             if last_digit.__contains__("."):
@@ -159,6 +159,12 @@ class WindowClass(QMainWindow, from_class):
                     self.calculation_formula += "0."
 
         self.setCalText()
+
+    def getLastNumber(self, formula_str):
+        numbers = re.findall(r'\d+\.\d+|\d+', formula_str)
+        length = len(numbers)
+        last_digit = str(numbers[length-1])
+        return last_digit
         
 
     def appendNumber(self, number:int):
@@ -241,15 +247,25 @@ class WindowClass(QMainWindow, from_class):
                     self.calculation_formula = self.genDefaultOperator(self.calculation_formula, "(")
             case EaOperator.PARENTHESIS_END:
                 print("EaOperator PARENTHESIS_END")
-                self.is_sign_reversed = False
-                self.parenthesis_cnt -= 1
+                self.checkFormulaForEndParenthesis()
                 self.activateEndParenthesis()
                 self.activateEquals()
-                # Append Operator on Formula
-                self.calculation_formula += ")"
+                
             case _:
                 print("Something's wrong with the operator")
         self.setCalText()
+
+    def checkFormulaForEndParenthesis(self):
+        last_char = self.getLastChar(self.calculation_formula)
+        if self.view_formula_operators.__contains__(last_char):
+            print("Formula ends with operator")
+            pass
+        else :
+            self.is_sign_reversed = False
+            if self.parenthesis_cnt > 0 :
+                self.parenthesis_cnt -= 1
+            # Append Operator on Formula
+            self.calculation_formula += ")"
 
     def genEvalStr(self, formula_str):
         view_operators = ["×", "÷"]
@@ -276,9 +292,11 @@ class WindowClass(QMainWindow, from_class):
         last_char = self.getLastChar(formula_str)
 
         if parenthesis_start == "(":
-            if last_char.isdigit() or last_char == "." or last_char == ")":
-                formula_str = formula_str.replace(".","")
+            if last_char.isdigit() or last_char == ")":
                 formula_str += "×"
+            elif last_char == "." :
+                formula_str = formula_str[:-1]
+                formula_str += "×"         
             
             formula_str += parenthesis_start
 
@@ -297,7 +315,10 @@ class WindowClass(QMainWindow, from_class):
         return formula_str
 
     def activateEndParenthesis(self):
+        last_char = self.getLastChar(self.calculation_formula)
         if self.parenthesis_cnt == 0:
+            self.btn_parenthesis_end.setEnabled(False)
+        elif self.view_formula_operators.__contains__(last_char):
             self.btn_parenthesis_end.setEnabled(False)
         else:
             self.btn_parenthesis_end.setEnabled(True)
@@ -307,6 +328,20 @@ class WindowClass(QMainWindow, from_class):
             self.btn_equals.setEnabled(True)
         else:
             self.btn_equals.setEnabled(False)
+
+    def activateOperators(self):
+        last_char = self.getLastChar(self.calculation_formula)
+        if last_char == "(":
+            self.btn_plus.setEnabled(False)
+            self.btn_minus.setEnabled(False)
+            self.btn_multiply.setEnabled(False)
+            self.btn_divide.setEnabled(False)
+        else:
+            self.btn_plus.setEnabled(True)
+            self.btn_minus.setEnabled(True)
+            self.btn_multiply.setEnabled(True)
+            self.btn_divide.setEnabled(True)
+        
 
     def activateSign(self):
         check_points = ['operator', 'parenthesis']
