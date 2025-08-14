@@ -115,6 +115,8 @@ class WindowClass(QMainWindow, from_class):
         self.calEdit.setAlignment(Qt.AlignmentFlag.AlignRight) 
         self.calEdit.moveCursor(QTextCursor.MoveOperation.End)
 
+        self.activateSign()
+
     def appendDecimalPoint(self, formula_str:str):
         self.is_sign_reversed = False
         last_char = self.getLastChar(formula_str)
@@ -254,7 +256,7 @@ class WindowClass(QMainWindow, from_class):
         last_char = self.getLastChar(formula_str)
 
         if parenthesis_start == "(":
-            if last_char.isdigit() or last_char == ".":
+            if last_char.isdigit() or last_char == "." or last_char == ")":
                 formula_str = formula_str.replace(".","")
                 formula_str += "×"
             
@@ -285,6 +287,28 @@ class WindowClass(QMainWindow, from_class):
             self.btn_equals.setEnabled(True)
         else:
             self.btn_equals.setEnabled(False)
+
+    def activateSign(self):
+        check_points = ['operator', 'parenthesis']
+
+        for chck_point in check_points:
+            match chck_point:
+                case 'operator':
+                    last_char = self.getLastChar(self.calculation_formula)
+                    if self.view_formula_operators.__contains__(last_char) or last_char == ".":
+                        self.btn_positive_negative.setEnabled(False)
+                        break
+                    else :
+                        self.btn_positive_negative.setEnabled(True)
+                    
+                case 'parenthesis':
+                    if self.parenthesis_cnt == 0:
+                        self.btn_positive_negative.setEnabled(True)
+                    else:
+                        self.btn_positive_negative.setEnabled(False)
+                        break
+
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
