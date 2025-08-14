@@ -5,6 +5,8 @@ from PyQt6.QtGui import *
 from PyQt6 import uic
 from PyQt6 import QtGui
 from PyQt6.QtCore import *
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtCore import QUrl as QUrl6
 
 from enum import Enum
 
@@ -13,7 +15,7 @@ class EaOperator(Enum):
     PLUS = 1
     MINUS = 2
     MULTIPLY = 3
-    DEVIDE = 4
+    divide = 4
     PARENTHESIS_START = 5
     PARENTHESIS_END = 6
 
@@ -66,6 +68,8 @@ class WindowClass(QMainWindow, from_class):
         self.btn_eight.clicked.connect(lambda: self.appendNumber(number=Singledigit.EIGHT.value))
         self.btn_nine.clicked.connect(lambda: self.appendNumber(number=Singledigit.NINE.value))
 
+        # print(f"styleSheet() : {self.btn_zero.style}")
+
         # DECIMAL POINTER
         self.btn_decimal_point.clicked.connect(lambda: self.appendDecimalPoint(formula_str=self.calculation_formula))
 
@@ -74,14 +78,30 @@ class WindowClass(QMainWindow, from_class):
         self.btn_plus.clicked.connect(lambda: self.eaCalculate(operate_type=EaOperator.PLUS))
         self.btn_minus.clicked.connect(lambda: self.eaCalculate(operate_type=EaOperator.MINUS))
         self.btn_multiply.clicked.connect(lambda: self.eaCalculate(operate_type=EaOperator.MULTIPLY))
-        self.btn_devide.clicked.connect(lambda: self.eaCalculate(operate_type=EaOperator.DEVIDE))
+        self.btn_divide.clicked.connect(lambda: self.eaCalculate(operate_type=EaOperator.divide))
         self.btn_parenthesis_start.clicked.connect(lambda: self.eaCalculate(operate_type=EaOperator.PARENTHESIS_START))
         self.btn_parenthesis_end.clicked.connect(lambda: self.eaCalculate(operate_type=EaOperator.PARENTHESIS_END))
         self.btn_parenthesis_end.setEnabled(False)
 
+        # INIT PPAP
+        # self.btn_ppap.clicked.connect(self.callPPAP)
+
         # INIT REVERSING SIGN
         self.btn_positive_negative.clicked.connect(self.reversingSign)
 
+    def callPPAP(self):
+        url = "https://www.youtube.com/watch?v=Ct6BUPvE2sM"
+        popup = QDialog(self)
+        popup.setWindowTitle("YouTube Video")
+
+        layout = QVBoxLayout(popup)
+        view = QWebEngineView()
+        view.setUrl(QUrl6(url))
+        layout.addWidget(view)
+
+        popup.setLayout(layout)
+        popup.resize(800, 600)
+        popup.exec()
 
     def reversingSign(self):
         if self.is_sign_reversed:
@@ -203,8 +223,8 @@ class WindowClass(QMainWindow, from_class):
                 self.is_sign_reversed = False
                 # Append Operator on Formula
                 self.calculation_formula = self.genFormulaStr("×")
-            case EaOperator.DEVIDE:
-                print("EaOperator DEVIDE")
+            case EaOperator.divide:
+                print("EaOperator divide")
                 self.is_sign_reversed = False
                 # Append Operator on Formula
                 self.calculation_formula = self.genFormulaStr("÷")
