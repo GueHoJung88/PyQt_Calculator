@@ -124,7 +124,7 @@
     <string>CA</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_devide">
+  <widget class="QPushButton" name="btn_divide">
    <property name="geometry">
     <rect>
      <x>460</x>
