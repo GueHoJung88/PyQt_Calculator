@@ -216,6 +216,7 @@ class WindowClass(QMainWindow, from_class):
         # 만약 네트워크/정책으로 autoplay가 막히면, 사용자가 클릭해서 재생할 수 있도록 컨트롤 제공됨.
         # (필요 시 controls=1, modestbranding=1 등의 파라미터를 추가하세요.)
 
+    # +/- 부호 변경
     def reversingSign(self):
         if self.is_sign_reversed:
             reversed_str = self.calculation_formula[2:-1]
@@ -225,6 +226,7 @@ class WindowClass(QMainWindow, from_class):
         self.calculation_formula = reversed_str
         self.setCalText()
         
+    # 계산 결과 상태 업데이트
     def setResultText(self):
         print(f"setResultText : {self.result_value}")
         try:
@@ -234,6 +236,7 @@ class WindowClass(QMainWindow, from_class):
             self.resultEdit.setText(str(self.result_value))
         self.resultEdit.setAlignment(Qt.AlignmentFlag.AlignRight)
 
+    # 계산 식 상태 업데이트
     def setCalText(self, param:str=""):
         if param == "":
             pass
@@ -252,6 +255,7 @@ class WindowClass(QMainWindow, from_class):
         self.activateEndParenthesis()
         self.manageEmptyValue(self.calculation_formula)
 
+    # 소수점 차리
     def appendDecimalPoint(self, formula_str:str):
         self.is_sign_reversed = False
         last_char = self.getLastChar(formula_str)
@@ -272,6 +276,7 @@ class WindowClass(QMainWindow, from_class):
 
         self.setCalText()
 
+    # 숫자 입력
     def appendNumber(self, number:int):
         self.is_sign_reversed = False
         self.calculation_formula = self.genDefaultOperator(self.calculation_formula, parenthesis_end=")")
