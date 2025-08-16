@@ -277,12 +277,6 @@ class WindowClass(QMainWindow, from_class):
                     self.calculation_formula += "0."
 
         self.setCalText()
-
-    def getLastNumber(self, formula_str):
-        numbers = re.findall(r'\d+\.\d+|\d+', formula_str)
-        length = len(numbers)
-        last_digit = str(numbers[length-1])
-        return last_digit
         
 
     def appendNumber(self, number:int):
@@ -472,7 +466,9 @@ class WindowClass(QMainWindow, from_class):
             rgex = r'\d+\.\d+|\d+'
         numbers = re.findall(rgex, formula_str)
         length = len(numbers)
-        last_digit = str(numbers[length-1])
+        last_digit = -1
+        if length > 0:
+            last_digit = str(numbers[length-1])
         print(f"getLastNumber : {last_digit}")
         return last_digit
 
