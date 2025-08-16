@@ -190,7 +190,7 @@ class WindowClass(QMainWindow, from_class):
 
         # 원하는 후처리
         try:
-            self.clear(amount=1)        # ← 여기서 원하는 함수 호출
+            self.removeDivideByZero()     # ← 여기서 원하는 함수 호출
             self.result_value = "0"
             self.setResultText()
         except Exception:
@@ -318,6 +318,10 @@ class WindowClass(QMainWindow, from_class):
         self.activateEndParenthesis()
         self.activateEquals()
 
+    def removeDivideByZero(self):
+        self.calculation_formula = self.calculation_formula.replace("÷0","")
+        self.setCalText()
+
     def countParenthesis(self, counting_str:str):
         self.parenthesis_cnt = counting_str.count("(") - counting_str.count(")")
 
@@ -327,8 +331,10 @@ class WindowClass(QMainWindow, from_class):
         match operate_type:
             case EaOperator.EQUALS:
                 print("EaOperator EQUALS")
+                print(f"Cal request str : {self.calculation_formula}")
                 self.calculation_formula = self.manageLastOperator(self.calculation_formula)
                 rplcd_str = self.genEvalStr(self.calculation_formula)
+                print(f"Cal eval gen str : {rplcd_str}")
                 try:
                     self.result_value = eval(rplcd_str)
                     print(f"self.result_value : {self.result_value}")
