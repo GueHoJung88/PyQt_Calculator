@@ -448,7 +448,10 @@ class WindowClass(QMainWindow, from_class):
 
     def getLastChar(self, formula_str, l_shift:int=0):
         str_len = len(formula_str)
-        last_char = formula_str[str_len-1-l_shift:str_len-l_shift]
+        start = str_len-1-l_shift
+        end = str_len-l_shift
+        last_char = formula_str[start:end]
+        print(f"l_shift : {l_shift}, str_len : {str_len}, start : {start}, end : {end}, last_char : {last_char}")
         return last_char
     
     def checkIfFloat(self, formula_str):
@@ -471,6 +474,11 @@ class WindowClass(QMainWindow, from_class):
             last_digit = str(numbers[length-1])
         print(f"getLastNumber : {last_digit}")
         return last_digit
+
+    def getNumberList(self, formula_str):
+        rgex = r'\d+\.\d+|\d+'
+        numbers = re.findall(rgex, formula_str)
+        return numbers
 
     def manageEmptyValue(self, formula_str:str):
         formula_str = formula_str.replace("()", "(0)")
