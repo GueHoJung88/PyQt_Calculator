@@ -291,7 +291,12 @@ class WindowClass(QMainWindow, from_class):
             else:
                 self.calculation_formula = str(number)
         elif (last_char_l_shifted == "(" or self.view_formula_operators.__contains__(last_char_l_shifted)) and last_number == "0":
-            self.calculation_formula = (self.calculation_formula[:-1] + str(number))
+            print(f"check real problem point - before : {self.calculation_formula}")
+            if self.getLastChar(self.calculation_formula) == "0":
+                self.calculation_formula = (self.calculation_formula[:-1] + str(number))
+            else:
+                self.calculation_formula = (self.calculation_formula + str(number))
+            print(f"check real problem point - after : {self.calculation_formula}")
         else:
             self.calculation_formula += str(number)
         self.setCalText()
